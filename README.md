@@ -16,7 +16,7 @@ A professional, production-ready Laravel package to standardize your API JSON re
 You can install the package via composer:
 
 ```bash
-composer require maksudur/laravel-api-response
+composer require maksudur-dev/laravel-api-response
 ```
 
 ### Configuration (Optional)

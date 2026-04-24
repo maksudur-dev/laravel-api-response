@@ -1,5 +1,5 @@
 {
-    "name": "maksudur/laravel-api-response",
+    "name": "maksudur-dev/laravel-api-response",
     "description": "A lightweight Laravel package to standardize API JSON responses.",
     "type": "library",
     "license": "MIT",
