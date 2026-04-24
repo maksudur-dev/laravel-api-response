@@ -9,7 +9,7 @@ A professional, production-ready Laravel package to standardize your API JSON re
 - **Fully Configurable**: Customize response keys (status, message, data, etc.) to match your needs.
 - **Standardized Pagination**: Automatic formatting for Laravel's Paginator.
 - **Zero Configuration**: Works out of the box, but highly customizable.
-- **Compatible**: Supports Laravel 9, 10, and 11+.
+- **Compatible**: Supports Laravel 8, 9, 10, 11, 12, and 13.
 
 ## Installation
 
