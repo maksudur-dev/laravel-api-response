@@ -9,6 +9,7 @@
             "email": "valiantmaksud@gmail.com"
         }
     ],
+    "version": "1.0.1",
     "require": {
         "php": "^8.0",
         "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0"
@@ -31,6 +32,12 @@
             }
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "keywords": [
+        "laravel",
+        "api",
+        "response",
+        "json",
+        "standardization"
+    ],
+    "homepage": "https://github.com/maksudur-dev/laravel-api-response"
 }
