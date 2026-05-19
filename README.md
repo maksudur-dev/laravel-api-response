@@ -31,9 +31,12 @@ This will create a `config/api-response.php` file where you can change the keys:
 
 ```php
 'keys' => [
+    'code' => 'code',
     'status' => 'success', // e.g., change 'status' to 'success'
-    'message' => 'msg',
-    // ...
+    'message' => 'error', // e.g., change 'message' to 'error'
+    'data' => 'data',
+    'errors' => 'errors',
+    'pagination' => 'pagination',
 ],
 ```
 
@@ -44,9 +47,14 @@ This will create a `config/api-response.php` file where you can change the keys:
 ```php
 use ApiResponse;
 
+// Standard HTTP 201 + body code 201
 return ApiResponse::success($data, 'User created', 201);
-return ApiResponse::error('Unauthorized', null, 401);
-return ApiResponse::paginate($users);
+
+// Standard HTTP 400 + body code 1000 (custom application error code)
+return ApiResponse::error('Invalid credentials.', null, 400, 1000);
+
+// Paginated response with custom application code 100
+return ApiResponse::paginate($users, 'Success', 200, 100);
 ```
 
 ### 2. Using Trait (Best for Controllers)
@@ -76,11 +84,21 @@ return api_error('Invalid input');
 return api_paginate($paginator);
 ```
 
+You can also pass a custom body code separately from the HTTP status:
+
+```php
+return api_success($data, 'Done', 200, 100);
+return api_error('Invalid credentials.', null, 400, 1000);
+```
+
 ## Response Formats
+
+The `code` field is returned in the JSON body and can be a custom application code. When no explicit body code is provided, it defaults to the HTTP status code.
 
 ### Success Response
 ```json
 {
+  "code": 200,
   "status": true,
   "message": "Success",
   "data": { ... }
@@ -90,6 +108,7 @@ return api_paginate($paginator);
 ### Error Response
 ```json
 {
+  "code": 400,
   "status": false,
   "message": "Error",
   "errors": { ... }
@@ -99,6 +118,7 @@ return api_paginate($paginator);
 ### Pagination Response
 ```json
 {
+  "code": 200,
   "status": true,
   "message": "Success",
   "data": [ ... ],

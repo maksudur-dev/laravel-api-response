@@ -15,9 +15,9 @@ trait HasApiResponse
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiSuccess($data = null, string $message = 'Success', int $code = 200): JsonResponse
+    protected function apiSuccess($data = null, string $message = 'Success', int $status = 200, int $code = null): JsonResponse
     {
-        return ApiResponse::success($data, $message, $code);
+        return ApiResponse::success($data, $message, $status, $code);
     }
 
     /**
@@ -25,12 +25,13 @@ trait HasApiResponse
      *
      * @param  string  $message
      * @param  mixed  $errors
-     * @param  int  $code
+     * @param  int  $status
+     * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiError(string $message = 'Error', $errors = null, int $code = 400): JsonResponse
+    protected function apiError(string $message = 'Error', $errors = null, int $status = 400, int $code = null): JsonResponse
     {
-        return ApiResponse::error($message, $errors, $code);
+        return ApiResponse::error($message, $errors, $status, $code);
     }
 
     /**

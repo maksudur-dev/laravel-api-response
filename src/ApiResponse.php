@@ -16,13 +16,14 @@ class ApiResponse
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function success($data = null, string $message = 'Success', int $code = 200): JsonResponse
+    public static function success($data = null, string $message = 'Success', int $status = 100, int $code = 200): JsonResponse
     {
         return response()->json([
+            config('api-response.keys.code', 'code') => $code ?? $status,
             config('api-response.keys.status', 'status') => true,
             config('api-response.keys.message', 'message') => $message,
             config('api-response.keys.data', 'data') => $data,
-        ], $code);
+        ], $status);
     }
 
     /**
@@ -30,16 +31,18 @@ class ApiResponse
      *
      * @param  string  $message
      * @param  mixed  $errors
-     * @param  int  $code
+     * @param  int  $status
+     * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function error(string $message = 'Error', $errors = null, int $code = 400): JsonResponse
+    public static function error(string $message = 'Error', $errors = null, int $status = 400, int $code = 400): JsonResponse
     {
         return response()->json([
+            config('api-response.keys.code', 'code') => $code ?? $status,
             config('api-response.keys.status', 'status') => false,
             config('api-response.keys.message', 'message') => $message,
             config('api-response.keys.errors', 'errors') => $errors,
-        ], $code);
+        ], $status);
     }
 
     /**
@@ -49,10 +52,11 @@ class ApiResponse
      * @param  string  $message
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function paginate($paginator, string $message = 'Success'): JsonResponse
+    public static function paginate($paginator, string $message = 'Success', int $status = 200, int $code = null): JsonResponse
     {
         if ($paginator instanceof LengthAwarePaginator || $paginator instanceof Paginator) {
             return response()->json([
+                config('api-response.keys.code', 'code') => $code ?? $status,
                 config('api-response.keys.status', 'status') => true,
                 config('api-response.keys.message', 'message') => $message,
                 config('api-response.keys.data', 'data') => $paginator->items(),
@@ -62,9 +66,9 @@ class ApiResponse
                     'per_page' => $paginator->perPage(),
                     'total' => $paginator instanceof LengthAwarePaginator ? $paginator->total() : null,
                 ],
-            ], 200);
+            ], $status);
         }
 
-        return self::success($paginator, $message);
+        return self::success($paginator, $message, $status, $code);
     }
 }
