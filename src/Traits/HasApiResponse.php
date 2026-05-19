@@ -12,12 +12,13 @@ trait HasApiResponse
      *
      * @param  mixed  $data
      * @param  string  $message
+     * @param  int  $status_code
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiSuccess($data = null, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
+    protected function apiSuccess($data = null, string $message = 'Success', int $status_code = 200, ?int $code = null): JsonResponse
     {
-        return ApiResponse::success($data, $message, $status, $code);
+        return ApiResponse::success($data, $message, $status_code, $code);
     }
 
     /**
@@ -25,13 +26,13 @@ trait HasApiResponse
      *
      * @param  string  $message
      * @param  mixed  $errors
-     * @param  int  $status
-     * @param  int|null  $code
+     * @param  int  $status_code
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiError(string $message = 'Error', $errors = null, int $status = 400, ?int $code = null): JsonResponse
+    protected function apiError(string $message = 'Error', $errors = null, int $status_code = 400, ?int $code = null): JsonResponse
     {
-        return ApiResponse::error($message, $errors, $status, $code);
+        return ApiResponse::error($message, $errors, $status_code, $code);
     }
 
     /**
@@ -39,12 +40,12 @@ trait HasApiResponse
      *
      * @param  mixed  $paginator
      * @param  string  $message
-     * @param  int  $status
-     * @param  int|null  $code
+     * @param  int  $status_code
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiPaginate($paginator, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
+    protected function apiPaginate($paginator, string $message = 'Success', int $status_code = 200, ?int $code = null): JsonResponse
     {
-        return ApiResponse::paginate($paginator, $message, $status, $code);
+        return ApiResponse::paginate($paginator, $message, $status_code, $code);
     }
 }

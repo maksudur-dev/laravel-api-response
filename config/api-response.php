@@ -10,7 +10,6 @@ return [
     |
     */
     'keys' => [
-        'code' => 'code',
         'status' => 'status',
         'message' => 'message',
         'data' => 'data',

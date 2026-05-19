@@ -13,18 +13,17 @@ class ApiResponse
      *
      * @param  mixed  $data
      * @param  string  $message
-     * @param  int  $status
-     * @param  int|null  $code
+     * @param  int  $status_code
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function success($data = null, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
+    public static function success($data = null, string $message = 'Success', int $status_code = 100, int $code = 200): JsonResponse
     {
         return response()->json([
-            config('api-response.keys.code', 'code') => $code ?? $status,
-            config('api-response.keys.status', 'status') => true,
+            config('api-response.keys.status', 'status') => $status_code,
             config('api-response.keys.message', 'message') => $message,
             config('api-response.keys.data', 'data') => $data,
-        ], $status);
+        ], $code);
     }
 
     /**
@@ -32,18 +31,17 @@ class ApiResponse
      *
      * @param  string  $message
      * @param  mixed  $errors
-     * @param  int  $status
-     * @param  int|null  $code
+     * @param  int  $status_code
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function error(string $message = 'Error', $errors = null, int $status = 400, ?int $code = null): JsonResponse
+    public static function error(string $message = 'Error', $errors = null, int $status_code = 400, int $code = 400): JsonResponse
     {
         return response()->json([
-            config('api-response.keys.code', 'code') => $code ?? $status,
-            config('api-response.keys.status', 'status') => false,
+            config('api-response.keys.status', 'status') => $status_code,
             config('api-response.keys.message', 'message') => $message,
             config('api-response.keys.errors', 'errors') => $errors,
-        ], $status);
+        ], $code);
     }
 
     /**
@@ -51,14 +49,15 @@ class ApiResponse
      *
      * @param  mixed  $paginator
      * @param  string  $message
+     * @param  int  $status_code
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function paginate($paginator, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
+    public static function paginate($paginator, string $message = 'Success', int $status_code = 100, int $code = 200): JsonResponse
     {
         if ($paginator instanceof LengthAwarePaginator || $paginator instanceof Paginator) {
             return response()->json([
-                config('api-response.keys.code', 'code') => $code ?? $status,
-                config('api-response.keys.status', 'status') => true,
+                config('api-response.keys.status', 'status') => $status_code,
                 config('api-response.keys.message', 'message') => $message,
                 config('api-response.keys.data', 'data') => $paginator->items(),
                 config('api-response.keys.pagination', 'pagination') => [
@@ -67,9 +66,9 @@ class ApiResponse
                     'per_page' => $paginator->perPage(),
                     'total' => $paginator instanceof LengthAwarePaginator ? $paginator->total() : null,
                 ],
-            ], $status);
+            ], $code);
         }
 
-        return self::success($paginator, $message, $status, $code);
+        return self::success($paginator, $message, $status_code, $code);
     }
 }

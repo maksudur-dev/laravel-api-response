@@ -6,7 +6,7 @@ A professional, production-ready Laravel package to standardize your API JSON re
 
 - **PSR-4 Compliant**: Clean, object-oriented structure.
 - **Multiple Usage Patterns**: Use Facades, Traits, or Global Helpers.
-- **Fully Configurable**: Customize response keys (status, message, data, etc.) to match your needs.
+- **Fully Configurable**: Customize response keys (status, message, data, etc.) to match your needs, including `status_code`/`status_message`.
 - **Standardized Pagination**: Automatic formatting for Laravel's Paginator.
 - **Zero Configuration**: Works out of the box, but highly customizable.
 - **Compatible**: Supports Laravel 8, 9, 10, 11, 12, and 13.
@@ -31,14 +31,15 @@ This will create a `config/api-response.php` file where you can change the keys:
 
 ```php
 'keys' => [
-    'code' => 'code',
-    'status' => 'success', // e.g., change 'status' to 'success'
-    'message' => 'error', // e.g., change 'message' to 'error'
+    'status' => 'status', // e.g., change 'status' to 'status_code'
+    'message' => 'message', // e.g., change 'message' to 'status_message'
     'data' => 'data',
     'errors' => 'errors',
     'pagination' => 'pagination',
 ],
 ```
+
+For example, you can customize your response fields to use `status_code` and `status_message` instead of the default `status` and `message` keys.
 
 ## Usage
 
@@ -47,16 +48,9 @@ This will create a `config/api-response.php` file where you can change the keys:
 ```php
 use ApiResponse;
 
-// Default behavior: body code matches the HTTP status
 return ApiResponse::success($data, 'User created', 201);
 return ApiResponse::error('Invalid credentials.', null, 400);
-
-// Custom application code in the body, separate from the HTTP status
-return ApiResponse::success($data, 'Created', 201, 100);
-return ApiResponse::error('Invalid credentials.', null, 400, 1000);
-
-// Paginated response with custom body code
-return ApiResponse::paginate($users, 'Success', 200, 100);
+return ApiResponse::paginate($users, 'Success', 200);
 ```
 
 ### 2. Using Trait (Best for Controllers)
@@ -86,22 +80,12 @@ return api_error('Invalid input');
 return api_paginate($paginator);
 ```
 
-You can also pass a custom body code separately from the HTTP status:
-
-```php
-return api_success($data, 'Done', 200, 100);
-return api_error('Invalid credentials.', null, 400, 1000);
-```
-
 ## Response Formats
-
-The `code` field is returned in the JSON body and can be a custom application code. When no explicit body code is provided, it defaults to the HTTP status code.
 
 ### Success Response
 ```json
 {
-  "code": 200,
-  "status": true,
+  "status": 100,
   "message": "Success",
   "data": { ... }
 }
@@ -110,8 +94,7 @@ The `code` field is returned in the JSON body and can be a custom application co
 ### Error Response
 ```json
 {
-  "code": 400,
-  "status": false,
+  "status": 400,
   "message": "Error",
   "errors": { ... }
 }
@@ -120,9 +103,24 @@ The `code` field is returned in the JSON body and can be a custom application co
 ### Pagination Response
 ```json
 {
-  "code": 200,
-  "status": true,
+  "status": 100,
   "message": "Success",
+  "data": [ ... ],
+  "pagination": {
+    "current_page": 1,
+    "last_page": 5,
+    "per_page": 10,
+    "total": 50
+  }
+}
+```
+
+### Custom Key Response
+If you change the config keys, your JSON response can instead use names like `status_code` and `status_message`:
+```json
+{
+  "status_code": 100,
+  "status_message": "Success",
   "data": [ ... ],
   "pagination": {
     "current_page": 1,
