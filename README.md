@@ -47,13 +47,15 @@ This will create a `config/api-response.php` file where you can change the keys:
 ```php
 use ApiResponse;
 
-// Standard HTTP 201 + body code 201
+// Default behavior: body code matches the HTTP status
 return ApiResponse::success($data, 'User created', 201);
+return ApiResponse::error('Invalid credentials.', null, 400);
 
-// Standard HTTP 400 + body code 1000 (custom application error code)
+// Custom application code in the body, separate from the HTTP status
+return ApiResponse::success($data, 'Created', 201, 100);
 return ApiResponse::error('Invalid credentials.', null, 400, 1000);
 
-// Paginated response with custom application code 100
+// Paginated response with custom body code
 return ApiResponse::paginate($users, 'Success', 200, 100);
 ```
 

@@ -13,10 +13,11 @@ class ApiResponse
      *
      * @param  mixed  $data
      * @param  string  $message
-     * @param  int  $code
+     * @param  int  $status
+     * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function success($data = null, string $message = 'Success', int $status = 100, int $code = 200): JsonResponse
+    public static function success($data = null, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
     {
         return response()->json([
             config('api-response.keys.code', 'code') => $code ?? $status,
@@ -35,7 +36,7 @@ class ApiResponse
      * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function error(string $message = 'Error', $errors = null, int $status = 400, int $code = 400): JsonResponse
+    public static function error(string $message = 'Error', $errors = null, int $status = 400, ?int $code = null): JsonResponse
     {
         return response()->json([
             config('api-response.keys.code', 'code') => $code ?? $status,
@@ -52,7 +53,7 @@ class ApiResponse
      * @param  string  $message
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function paginate($paginator, string $message = 'Success', int $status = 200, int $code = null): JsonResponse
+    public static function paginate($paginator, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
     {
         if ($paginator instanceof LengthAwarePaginator || $paginator instanceof Paginator) {
             return response()->json([

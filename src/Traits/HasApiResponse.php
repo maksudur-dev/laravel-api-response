@@ -15,7 +15,7 @@ trait HasApiResponse
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiSuccess($data = null, string $message = 'Success', int $status = 200, int $code = null): JsonResponse
+    protected function apiSuccess($data = null, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
     {
         return ApiResponse::success($data, $message, $status, $code);
     }
@@ -29,7 +29,7 @@ trait HasApiResponse
      * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiError(string $message = 'Error', $errors = null, int $status = 400, int $code = null): JsonResponse
+    protected function apiError(string $message = 'Error', $errors = null, int $status = 400, ?int $code = null): JsonResponse
     {
         return ApiResponse::error($message, $errors, $status, $code);
     }
@@ -39,10 +39,12 @@ trait HasApiResponse
      *
      * @param  mixed  $paginator
      * @param  string  $message
+     * @param  int  $status
+     * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function apiPaginate($paginator, string $message = 'Success'): JsonResponse
+    protected function apiPaginate($paginator, string $message = 'Success', int $status = 200, ?int $code = null): JsonResponse
     {
-        return ApiResponse::paginate($paginator, $message);
+        return ApiResponse::paginate($paginator, $message, $status, $code);
     }
 }
